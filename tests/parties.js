@@ -43,3 +43,20 @@ describe('POST /api/v1/parties', () => {
       });
   });
 });
+
+// VIEW ALL PARTIES
+describe('GET /api/v1/parties', () => {
+  it('Should return status code 200', () => {
+    chai.request(app)
+      .get('/api/v1/parties')
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.have.property('status');
+        expect(res.body).to.have.property('data');
+        expect(res.body.data).to.be.a('array');
+        expect(res.body.data[0].id).to.be.a('number');
+        expect(res.body.data[0].name).to.be.a('string');
+        expect(res.body.data[0].logourl).to.be.a('string');
+      });
+  });
+});

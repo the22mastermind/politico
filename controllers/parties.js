@@ -2,7 +2,7 @@ import partyModel from '../models/parties';
 import validator from '../middlewares/validation';
 import moment from 'moment';
 
-// User signup
+// create Party
 exports.createParty = async function (req, res) {
 	// Joi Validation
 	const { error } = validator.validateCreateParty(req.body);
@@ -39,5 +39,13 @@ exports.createParty = async function (req, res) {
 		  	name: newParty.name
 		  }
 		]
+	});
+};
+
+// view all Parties
+exports.viewAllParties = async function (req, res) {
+	return res.status(200).json({
+		status: 200,
+		data: partyModel
 	});
 };
