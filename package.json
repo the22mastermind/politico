@@ -27,7 +27,9 @@
   "scripts": {
     "test": "mocha --compilers js:babel-register tests/*.js --exit",
     "start": "nodemon index.js --exec babel-node --",
-    "lint": "node_modules/.bin/eslint"
+    "lint": "node_modules/.bin/eslint",
+    "coverage": "istanbul cover _mocha -- --compilers js:babel-register tests/*.js --exit",
+    "showcoverage": "xdg-open coverage/lcov-report/index.html"
   },
   "repository": {
     "type": "git",
