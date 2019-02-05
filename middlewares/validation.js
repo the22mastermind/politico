@@ -14,6 +14,16 @@ function validateSignUp(user) {
   return Joi.validate(user, schema);
 };
 
+function validateCreateParty(party) {
+  const schema = {
+    name: Joi.string().min(3).max(30).required(),
+    hqaddress: Joi.string().min(3).max(100).required(),
+    logourl: Joi.string().max(200).required()
+  };
+  return Joi.validate(party, schema);
+};
+
 export default {
-  validateSignUp
+  validateSignUp,
+  validateCreateParty
 };
