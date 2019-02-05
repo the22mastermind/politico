@@ -49,3 +49,28 @@ exports.viewAllParties = async function (req, res) {
 		data: partyModel
 	});
 };
+
+// view single Party
+exports.viewSingleParty = async function (req, res) {
+	// Check if param is integer
+	const { id } = req.params;
+	if (!Number.isInteger(parseInt(id, 10))) {
+		return res.status(400).json({
+			status: 400,
+			error: `${id} must be an integer`
+		});
+	} else {
+		const party = await partyModel.find(p => p.id === parseInt(id, 10));
+		if (party) {
+			return res.status(200).json({
+				status: 200,
+				data: party
+			});
+		} else {
+			return res.status(404).json({
+				status: 404,
+				error: `Party of id: ${id} not found`
+			});
+		}
+	}
+};
