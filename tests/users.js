@@ -63,7 +63,7 @@ describe('POST /api/v1/users/signup', () => {
       .send({
       	firstname: '',
       	lastname: '',
-      	othername: 'aka',
+      	othername: '',
       	email: 'johndoe@gmail.com',
       	password: 'johndoe@2019',
       	phonenumber: '',
