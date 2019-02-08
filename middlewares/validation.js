@@ -23,7 +23,15 @@ function validateCreateParty(party) {
   return Joi.validate(party, schema);
 };
 
+function validateEditParty(party) {
+  const schema = {
+    name: Joi.string().min(3).max(30).required()
+  };
+  return Joi.validate(party, schema);
+};
+
 export default {
   validateSignUp,
-  validateCreateParty
+  validateCreateParty,
+  validateEditParty
 };

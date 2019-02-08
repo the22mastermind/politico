@@ -56,6 +56,7 @@ describe('POST /api/v1/users/signup', () => {
   });
 });
 
+// Invalid signup form
 describe('POST /api/v1/users/signup', () => {
   it('Should return status code 400', () => {
     chai.request(app)
@@ -77,5 +78,46 @@ describe('POST /api/v1/users/signup', () => {
       });
   });
 });
-
-
+// Register an already registered user
+describe('POST /api/v1/users/signup', () => {
+  it('Should return status code 400', () => {
+    // Register user
+    chai.request(app)
+      .post('/api/v1/users/signup')
+      .send({
+        firstname: 'John',
+        lastname: 'Doe',
+        othername: 'aka',
+        email: 'johndoe1@gmail.com',
+        password: 'johndoe@2019',
+        phonenumber: '+250787770000',
+        passporturl: 'https://www.google.com',
+        isadmin: true
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body).to.have.property('status');
+        expect(res.body).to.have.property('data');
+        expect(res.body).to.have.property('message');
+        expect(res.body.message).to.equal('Success!');
+        expect(res.body.data).to.be.a('array');
+      });
+    // Try registering same email again
+    chai.request(app)
+      .post('/api/v1/users/signup')
+      .send({
+        firstname: 'John',
+        lastname: 'Doe',
+        othername: 'aka',
+        email: 'johndoe1@gmail.com',
+        password: 'johndoe@2019',
+        phonenumber: '+250787770000',
+        passporturl: 'https://www.google.com',
+        isadmin: true
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.have.property('status');
+      });
+  });
+});
