@@ -30,8 +30,17 @@ function validateEditParty(party) {
   return Joi.validate(party, schema);
 };
 
+function validateCreateOffice(office) {
+  const schema = {
+    type: Joi.string().min(3).max(30).required(),
+    name: Joi.string().min(3).max(30).required()
+  };
+  return Joi.validate(office, schema);
+};
+
 export default {
   validateSignUp,
   validateCreateParty,
-  validateEditParty
+  validateEditParty,
+  validateCreateOffice
 };

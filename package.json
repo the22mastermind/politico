@@ -22,7 +22,8 @@
     "eslint-plugin-import": "^2.16.0",
     "istanbul": "^1.0.0-alpha.2",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.9"
+    "nodemon": "^1.18.9",
+    "nyc": "^13.1.0"
   },
   "scripts": {
     "test": "mocha --compilers js:babel-register tests/*.js --exit",
