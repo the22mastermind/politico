@@ -132,7 +132,7 @@ exports.editParty = async function (req, res) {
 	});
 };
 
-// edit Party
+// delete Party
 exports.deleteParty = async function (req, res) {
 	// Check if id is integer
 	const { id } = req.params;
