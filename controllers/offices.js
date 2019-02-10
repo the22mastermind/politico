@@ -38,3 +38,28 @@ exports.viewAllOffices = async function (req, res) {
 		data: officeModel
 	});
 };
+
+// view specific office
+exports.viewSpecificOffice = async function (req, res) {
+	// Check if param is integer
+	const { id } = req.params;
+	if (!Number.isInteger(parseInt(id, 10))) {
+		return res.status(400).json({
+			status: 400,
+			error: `${id} must be an integer`
+		});
+	} else {
+		const office = await officeModel.find(o => o.id === parseInt(id, 10));
+		if (office) {
+			return res.status(200).json({
+				status: 200,
+				data: office
+			});
+		} else {
+			return res.status(404).json({
+				status: 404,
+				error: `Office of id: ${id} not found`
+			});
+		}
+	}
+};

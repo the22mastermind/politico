@@ -62,3 +62,49 @@ describe('GET /api/v1/offices', () => {
 });
 
 // ***********************************
+
+// VIEW SPECIFIC POLITICAL OFFICE
+describe('GET /api/v1/offices/<office-id>', () => {
+  it('Should return status code 200', () => {
+    let officeId = 1;
+    chai.request(app)
+      .get(`/api/v1/offices/${officeId}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.have.property('status');
+        expect(res.body).to.have.property('data');
+        expect(res.body.data).to.be.a('object');
+        expect(res.body.data.id).to.be.a('number');
+        expect(res.body.data.type).to.be.a('string');
+        expect(res.body.data.name).to.be.a('string');
+      });
+  });
+});
+
+// Unexisting office id
+describe('GET /api/v1/offices/<office-id>', () => {
+  it('Should return status code 404', () => {
+    let officeId = 100;
+    chai.request(app)
+      .get(`/api/v1/offices/${officeId}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        expect(res.body).to.have.property('status');
+      });
+  });
+});
+
+// Invalid office id
+describe('GET /api/v1/offices/<office-id>', () => {
+  it('Should return status code 400', () => {
+    let officeId = 'astring';
+    chai.request(app)
+      .get(`/api/v1/offices/${officeId}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.have.property('status');
+      });
+  });
+});
+
+// ***********************************
