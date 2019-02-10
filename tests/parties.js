@@ -175,7 +175,6 @@ describe('PATCH /api/v1/parties/<party-id>/name', () => {
       .patch(`/api/v1/parties/${partyId}/${partyName}`)
       .send(newPartyName)
       .end((err, res) => {
-        console.log(res.body);
         expect(res.status).to.equal(404);
         expect(res.body).to.have.property('status');
       });
@@ -209,6 +208,49 @@ describe('PATCH /api/v1/parties/<party-id>/name', () => {
       .send(newPartyName)
       .end((err, res) => {
         expect(res.status).to.equal(404);
+        expect(res.body).to.have.property('status');
+      });
+  });
+});
+// ************************************************
+
+// DELETE PARTY
+describe('DELETE /api/v1/parties/<party-id>', () => {
+  it('Should return status code 200', () => {
+    let partyId = 1;
+    chai.request(app)
+      .delete(`/api/v1/parties/${partyId}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body).to.have.property('status');
+        expect(res.body).to.have.property('data');
+        expect(res.body.data[0].message).to.equal('Party deleted successfully!');
+      });
+  });
+});
+ // Unexisting party
+describe('DELETE /api/v1/parties/<party-id>', () => {
+  it('Should return status code 404', () => {
+    let partyId = 100;
+    chai.request(app)
+      .delete(`/api/v1/parties/${partyId}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(404);
+        expect(res.body).to.have.property('status');
+        expect(res.body).to.have.property('error');
+        expect(res.body.error).to.equal(`The party of id: ${partyId} does not exist.`);
+      });
+  });
+});
+
+// Invalid party id
+describe('DELETE /api/v1/parties/<party-id>', () => {
+  it('Should return status code 400', () => {
+    let partyId = 'invalid id';
+    chai.request(app)
+      .delete(`/api/v1/parties/${partyId}`)
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
         expect(res.body).to.have.property('status');
       });
   });

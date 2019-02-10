@@ -7,5 +7,6 @@ router.post('/', controller.createParty);
 router.get('/', controller.viewAllParties);
 router.get('/:id', controller.viewSingleParty);
 router.patch('/:id/:name', controller.editParty);
+router.delete('/:id', controller.deleteParty);
 
 export default router;

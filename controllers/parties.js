@@ -131,3 +131,37 @@ exports.editParty = async function (req, res) {
 		]
 	});
 };
+
+// edit Party
+exports.deleteParty = async function (req, res) {
+	// Check if id is integer
+	const { id } = req.params;
+	if (!Number.isInteger(parseInt(id, 10))) {
+		return res.status(400).json({
+			status: 400,
+			error: `${id} must be an integer`
+		});
+	}
+	// Check if party exists
+	const party = await partyModel.find(p => p.id === parseInt(id, 10));
+	if (!party) {
+		return res.status(404).json({
+			status: 404,
+			error: `The party of id: ${id} does not exist.`
+		});
+	}
+	// Delete party
+	partyModel.map((parties, index) => {
+		if (parties.id == id) {
+			partyModel.splice(index, 1);
+			return res.status(200).json({
+				status: 200,
+				data: [
+					{
+						message: 'Party deleted successfully!'
+					}
+				]
+			});
+		}
+	});
+};
