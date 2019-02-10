@@ -30,3 +30,11 @@ exports.createOffice = async function (req, res) {
 		]
 	});
 };
+
+// view all offices
+exports.viewAllOffices = async function (req, res) {
+	return res.status(200).json({
+		status: 200,
+		data: officeModel
+	});
+};
