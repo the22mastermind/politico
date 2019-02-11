@@ -1,11 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand');
-
 @font-face{
 	font-family: 'Quicksand';
-	
 	src: url('/static/fonts/fontawesome-webfont.woff') format('webfont');
 }
-
 /*Extra small devices (portrait phones, less than 576px)*/
 @media (max-width: 575.98px){
 	body {
@@ -21,7 +18,6 @@
 		height: 30px!important;
 		background-color: transparent;
 		color: #008DCB;
-		/*color: #3A5199;*/
 	}
 	.fa-bars,
 	.fa-times {
@@ -44,7 +40,6 @@
 	}
 	.mobile-nav-links {
 		list-style: none;
-		/*display: none;*/
 		padding: 20px 20px 20px 40px;
 	}
 	.mobile-nav-links > li {
@@ -154,7 +149,6 @@
 		margin: 10px 45px 0px 0px!important;
 	}
 }
-
 /*Small devices (landscape phones, 576px and up)*/
 @media (min-width: 576px) and (max-width: 767.98px) {
 	body {
@@ -192,7 +186,6 @@
 	}
 	.mobile-nav-links {
 		list-style: none;
-		/*display: none;*/
 		padding: 20px 20px 20px 40px;
 	}
 	.mobile-nav-links > li {
@@ -302,7 +295,6 @@
 		margin: 10px 45px 0px 0px!important;
 	}
 }
-
 /*Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) and (max-width: 991.98px) {
 	body {
@@ -340,7 +332,6 @@
 	}
 	.mobile-nav-links {
 		list-style: none;
-		/*display: none;*/
 		padding: 20px 20px 20px 40px;
 	}
 	.mobile-nav-links > li {
@@ -450,7 +441,6 @@
 		margin: 10px 45px 0px 0px!important;
 	}
 }
-
 /*Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) and (max-width: 1199.98px) {
 	body {
@@ -534,7 +524,6 @@
 		width: 550px!important;
 	}
 }
-
 /*Extra large devices (large desktops, 1200px and up)*/
 @media (min-width: 1200px) {
 	body {
@@ -575,7 +564,6 @@
 		border-bottom: 1px solid #eee;
 	}
 	.meetup_card {
-		/*width: 450px;*/
 		height: 100px;
 		margin-bottom: 10px;
 		display: flex;
@@ -617,9 +605,7 @@
 	.meetup_cover_comment {
 		width: 550px!important;
 	}
-
 }
-
 /*Common styles*/
 * {
 	outline: none!important;
@@ -631,14 +617,12 @@ a {
 }
 body {
 	font-family: 'Quicksand', 'sans-serif';
-	/*color: #333;*/
 	color: #555;
 }
 nav {
 	display: flex;
 	justify-content: space-between;
 }
-
 .home > a {
 	text-decoration: none;
 	color: #008DCB;
@@ -678,7 +662,6 @@ nav {
 .actions {
 	display: flex;
 	line-height: 18px;
-	/*line-height: 38px;*/
 	text-decoration: none;
 	color: inherit;
 }
@@ -717,7 +700,6 @@ nav {
 footer > p {
 	text-align: center;
 }
-
 input[type=text],
 input[type=date],
 input[type=time],
@@ -738,22 +720,17 @@ button {
 	color: #FFF;
 }
 input[name=tags] {
-	/*width: 450px;*/
 	height: 25px;
 }
 .form-wrapper {
 	width: 320px;
 	background-color: #eee;
 	padding: 20px;
-	/*margin-top: 50px;*/
 	border-radius: 15px;
 }
-
-
 .meetup_card_details {
 	width: 80%;
 	height: 100%;
-	/*background-color: #eee;*/
 	background-color: #F1F1F2;
 }
 .noback {
@@ -766,9 +743,6 @@ input[name=tags] {
 }
 #upvote, #downvote {
 	font-size: 8pt;
-}
-.comments {
-	/*display: flex;*/
 }
 .rsvp,
 .question-form-toggler,
@@ -798,7 +772,6 @@ input[name=tags] {
 	display: flex;
 	flex-direction: column;
 }
-
 textarea {
 	padding: 10px;
 	resize: none;
@@ -860,10 +833,8 @@ form > textarea {
 	float: right;
 	margin-top: 5px;
 }
-
 .question_card_wrapper {
 	padding: 10px;
-	/*font-size: 8pt;*/
 }
 .question-header {
 	display: flex;
@@ -922,8 +893,6 @@ form > textarea {
 .smallestleft {
 	padding-left: 10px;
 }
-
-
 .organizer,
 .date,
 .duration,
@@ -931,9 +900,6 @@ form > textarea {
 .reserved {
 	font-size: 8pt;
 	margin-top: 5px;
-}
-.smallfont {
-	/*font-size: 8pt;*/
 }
 .tagline-wrapper {
 	width: auto!important;

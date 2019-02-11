@@ -1,11 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Quicksand');
-
 @font-face{
 	font-family: 'Quicksand';
-	
 	src: url('/static/fonts/fontawesome-webfont.woff') format('webfont');
 }
-
 /*Extra small devices (portrait phones, less than 576px)*/
 @media (max-width: 575.98px){
 	body {
@@ -179,7 +176,6 @@
 		margin: 10px;
 	}
 }
-
 /*Small devices (landscape phones, 576px and up)*/
 @media (min-width: 576px) and (max-width: 767.98px) {
 	body {
@@ -329,7 +325,6 @@
 		margin: 10px 45px 0px 0px!important;
 	}
 }
-
 /*Medium devices (tablets, 768px and up)*/
 @media (min-width: 768px) and (max-width: 991.98px) {
 	body {
@@ -370,7 +365,6 @@
 	}
 	.mobile-nav-links {
 		list-style: none;
-		/*display: none;*/
 		padding: 20px 20px 20px 40px;
 	}
 	.mobile-nav-links > li {
@@ -504,7 +498,6 @@
 		font-size: 8pt;
 	}
 }
-
 /*Large devices (desktops, 992px and up)*/
 @media (min-width: 992px) and (max-width: 1199.98px) {
 	body {
@@ -609,7 +602,6 @@
 		margin-bottom: 20px;
 	}
 }
-
 /*Extra large devices (large desktops, 1200px and up)*/
 @media (min-width: 1200px) {
 	body {
@@ -714,9 +706,7 @@
 	.no-list-style > li {
 		margin-bottom: 20px;
 	}
-
 }
-
 /*Common styles*/
 * {
 	outline: none!important;
@@ -728,14 +718,12 @@ a {
 }
 body {
 	font-family: 'Quicksand', 'sans-serif';
-	/*color: #333;*/
 	color: #555;
 }
 nav {
 	display: flex;
 	justify-content: space-between;
 }
-
 .home > a {
 	text-decoration: none;
 	color: #008DCB;
@@ -775,7 +763,6 @@ nav {
 .actions {
 	display: flex;
 	line-height: 18px;
-	/*line-height: 38px;*/
 	text-decoration: none;
 	color: inherit;
 }
@@ -814,7 +801,6 @@ nav {
 footer > p {
 	text-align: center;
 }
-
 input[type=text],
 input[type=date],
 input[type=time],
@@ -835,7 +821,6 @@ button {
 	color: #FFF;
 }
 input[name=tags] {
-	/*width: 450px;*/
 	height: 25px;
 }
 .form-wrapper {
@@ -847,7 +832,6 @@ input[name=tags] {
 .meetup_card_details {
 	width: 80%;
 	height: 100%;
-	/*background-color: #eee;*/
 	background-color: #F1F1F2;
 }
 .noback {
@@ -928,7 +912,6 @@ form > textarea {
 	float: right;
 	margin-top: 5px;
 }
-
 .question_card_wrapper {
 	padding: 10px;
 }
@@ -997,7 +980,6 @@ form > textarea {
 	font-size: 8pt;
 	margin-top: 5px;
 }
-
 .dashboard-menu-btn:hover,
 .dashboard-menu-btn:focus {
 	cursor: pointer;
@@ -1027,5 +1009,3 @@ form > textarea {
 	margin-right: 10px;
 	font-size: 12pt!important;
 }
-
-
