@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/models/parties.js"],"names":["parties"],"mappings":";;;;;AAAA,IAAMA,UAAU,EAAhB;;kBAEeA,O","file":"parties.js","sourcesContent":["const parties = [];\n\nexport default parties;\n"]}

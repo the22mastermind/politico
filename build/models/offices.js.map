@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/models/offices.js"],"names":["offices"],"mappings":";;;;;AAAA,IAAMA,UAAU,EAAhB;;kBAEeA,O","file":"offices.js","sourcesContent":["const offices = [];\n\nexport default offices;\n"]}

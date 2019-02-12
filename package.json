@@ -26,13 +26,13 @@
     "nyc": "^13.1.0"
   },
   "scripts": {
-    "test": "NODE_ENV=test istanbul cover _mocha -- --compilers js:babel-register tests/*.js --exit",
+    "test": "NODE_ENV=test istanbul cover _mocha -- --compilers js:babel-register src/tests/*.js --exit",
     "clean": "rm -rf build && mkdir build",
-    "build-babel": "babel -d ./build . -s",
+    "build-babel": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-babel",
     "start": "npm run build && node ./build/index.js",
     "lint": "node_modules/.bin/eslint",
-    "coverage": "istanbul cover _mocha -- --compilers js:babel-register tests/*.js --exit",
+    "coverage": "istanbul cover _mocha -- --compilers js:babel-register src/tests/*.js --exit",
     "showcoverage": "xdg-open coverage/lcov-report/index.html",
     "coveralls": "npm run coverage -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
   },
