@@ -45,5 +45,8 @@
   "bugs": {
     "url": "https://github.com/the22mastermind/politico/issues"
   },
-  "homepage": "https://github.com/the22mastermind/politico#readme"
+  "homepage": "https://github.com/the22mastermind/politico#readme",
+  "engines": {
+    "node": "8.14.0"
+  }
 }
