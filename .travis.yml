@@ -1,6 +1,3 @@
-env:
-  glabal:
-    - CC_TEST_REPORTER_ID=ce9e93aacfc786d7e498ee0529e13be221a4aead470efbef22e446c39d7ce13d
 language: node_js
 node_js:
   - "stable"
