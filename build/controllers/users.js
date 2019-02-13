@@ -4,10 +4,6 @@ var _users = require('../models/users');
 
 var _users2 = _interopRequireDefault(_users);
 
-var _validation = require('../middlewares/validation');
-
-var _validation2 = _interopRequireDefault(_validation);
-
 var _moment = require('moment');
 
 var _moment2 = _interopRequireDefault(_moment);
@@ -16,16 +12,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // User signup
 exports.userSignup = async function (req, res) {
-	// Joi Validation
-	var _validator$validateSi = _validation2.default.validateSignUp(req.body),
-	    error = _validator$validateSi.error;
-
-	if (error) {
-		return res.status(400).json({
-			status: 400,
-			error: error.details[0].message
-		});
-	}
+	// // Joi Validation
+	// const { error } = validator.validateSignUp(req.body);
+	// if (error) {
+	// 	return res.status(400).json({
+	// 		status: 400,
+	// 		error: error.details[0].message
+	// 	});
+	// }
 	// Custom Validation
 
 	// Check if email is already registered
@@ -66,4 +60,5 @@ exports.userSignup = async function (req, res) {
 		message: 'Success!'
 	});
 };
+// import validator from '../middlewares/validation';
 //# sourceMappingURL=users.js.map

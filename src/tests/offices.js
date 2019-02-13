@@ -12,8 +12,8 @@ describe('POST /api/v1/offices', () => {
     chai.request(app)
       .post('/api/v1/offices')
       .send({
-        type: 'Political Party 1',
-        name: 'Member of Senate',
+        type: 'federal',
+        name: 'Senate',
       })
       .end((err, res) => {
         expect(res.status).to.equal(201);
@@ -23,6 +23,16 @@ describe('POST /api/v1/offices', () => {
         expect(res.body.data[0].id).to.be.a('number');
         expect(res.body.data[0].type).to.be.a('string');
         expect(res.body.data[0].name).to.be.a('string');
+      });
+    chai.request(app)
+      .post('/api/v1/offices')
+      .send({
+        type: 'federal',
+        name: 'Senate',
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(400);
+        expect(res.body).to.have.property('error');
       });
   });
 });
@@ -54,9 +64,6 @@ describe('GET /api/v1/offices', () => {
         expect(res.body).to.have.property('status');
         expect(res.body).to.have.property('data');
         expect(res.body.data).to.be.a('array');
-        expect(res.body.data[0].id).to.be.a('number');
-        expect(res.body.data[0].type).to.be.a('string');
-        expect(res.body.data[0].name).to.be.a('string');
       });
   });
 });
@@ -66,6 +73,21 @@ describe('GET /api/v1/offices', () => {
 // VIEW SPECIFIC POLITICAL OFFICE
 describe('GET /api/v1/offices/<office-id>', () => {
   it('Should return status code 200', () => {
+    chai.request(app)
+      .post('/api/v1/offices')
+      .send({
+        type: 'state',
+        name: 'Senate',
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body).to.have.property('status');
+        expect(res.body).to.have.property('data');
+        expect(res.body.data).to.be.a('array');
+        expect(res.body.data[0].id).to.be.a('number');
+        expect(res.body.data[0].type).to.be.a('string');
+        expect(res.body.data[0].name).to.be.a('string');
+      });
     let officeId = 1;
     chai.request(app)
       .get(`/api/v1/offices/${officeId}`)

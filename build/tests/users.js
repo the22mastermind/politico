@@ -52,6 +52,7 @@ describe('POST /api/v1/users/signup', function () {
       passporturl: 'https://www.google.com',
       isadmin: true
     }).end(function (err, res) {
+      console.log(res.body);
       expect(res.status).to.equal(201);
       expect(res.body).to.have.property('status');
       expect(res.body).to.have.property('data');

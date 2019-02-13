@@ -23,8 +23,8 @@ _chai2.default.should();
 describe('POST /api/v1/offices', function () {
   it('Should return status code 201', function () {
     _chai2.default.request(_index2.default).post('/api/v1/offices').send({
-      type: 'Political Party 1',
-      name: 'Member of Senate'
+      type: 'federal',
+      name: 'Senate'
     }).end(function (err, res) {
       expect(res.status).to.equal(201);
       expect(res.body).to.have.property('status');
@@ -33,6 +33,13 @@ describe('POST /api/v1/offices', function () {
       expect(res.body.data[0].id).to.be.a('number');
       expect(res.body.data[0].type).to.be.a('string');
       expect(res.body.data[0].name).to.be.a('string');
+    });
+    _chai2.default.request(_index2.default).post('/api/v1/offices').send({
+      type: 'federal',
+      name: 'Senate'
+    }).end(function (err, res) {
+      expect(res.status).to.equal(400);
+      expect(res.body).to.have.property('error');
     });
   });
 });
@@ -59,9 +66,6 @@ describe('GET /api/v1/offices', function () {
       expect(res.body).to.have.property('status');
       expect(res.body).to.have.property('data');
       expect(res.body.data).to.be.a('array');
-      expect(res.body.data[0].id).to.be.a('number');
-      expect(res.body.data[0].type).to.be.a('string');
-      expect(res.body.data[0].name).to.be.a('string');
     });
   });
 });
@@ -71,8 +75,21 @@ describe('GET /api/v1/offices', function () {
 // VIEW SPECIFIC POLITICAL OFFICE
 describe('GET /api/v1/offices/<office-id>', function () {
   it('Should return status code 200', function () {
+    _chai2.default.request(_index2.default).post('/api/v1/offices').send({
+      type: 'state',
+      name: 'Senate'
+    }).end(function (err, res) {
+      expect(res.status).to.equal(201);
+      expect(res.body).to.have.property('status');
+      expect(res.body).to.have.property('data');
+      expect(res.body.data).to.be.a('array');
+      expect(res.body.data[0].id).to.be.a('number');
+      expect(res.body.data[0].type).to.be.a('string');
+      expect(res.body.data[0].name).to.be.a('string');
+    });
     var officeId = 1;
     _chai2.default.request(_index2.default).get('/api/v1/offices/' + officeId).end(function (err, res) {
+      console.log(res.body);
       expect(res.status).to.equal(200);
       expect(res.body).to.have.property('status');
       expect(res.body).to.have.property('data');

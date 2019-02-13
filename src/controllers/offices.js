@@ -12,11 +12,19 @@ exports.createOffice = async function (req, res) {
 			error: error.details[0].message
 		});
 	}
+	// Check if office (type and name) is already registered
+	const office = await officeModel.find(o => o.type === req.body.type.trim() && o.name === req.body.name.trim());
+	if (office) {
+		return res.status(400).json({
+			status: 400,
+			error: `The office of type: <${req.body.type.trim()}> and name: <${req.body.name.trim()}> is already registered.`
+		});
+	}
 	// Register office
 	const newOffice = {
 		id: officeModel.length + 1,
-		type: req.body.type,
-		name: req.body.name
+		type: req.body.type.trim(),
+		name: req.body.name.trim()
 	};
 	officeModel.push(newOffice);
 	return res.status(201).json({

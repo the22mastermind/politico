@@ -4,9 +4,9 @@ var _offices = require('../models/offices');
 
 var _offices2 = _interopRequireDefault(_offices);
 
-var _validation = require('../middlewares/validation');
+var _custom = require('../middlewares/custom');
 
-var _validation2 = _interopRequireDefault(_validation);
+var _custom2 = _interopRequireDefault(_custom);
 
 var _moment = require('moment');
 
@@ -15,22 +15,40 @@ var _moment2 = _interopRequireDefault(_moment);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // create Party
+
+// import validator from '../middlewares/validation';
 exports.createOffice = async function (req, res) {
 	// Joi Validation
-	var _validator$validateCr = _validation2.default.validateCreateOffice(req.body),
-	    error = _validator$validateCr.error;
-
-	if (error) {
+	// const { error } = validator.validateCreateOffice(req.body);
+	// if (error) {
+	// 	return res.status(400).json({
+	// 		status: 400,
+	// 		error: error.details[0].message
+	// 	});
+	// }
+	// Custom validation
+	// const officeChecker = checkEmptySpaces.createOfficeChecker(req.body);
+	// if (officeChecker) {
+	// 	return res.status(400).json({
+	// 		status: 400,
+	// 		error: officeChecker.error
+	// 	});
+	// }
+	// Check if office (type and name) is already registered
+	var office = await _offices2.default.find(function (o) {
+		return o.type === req.body.type.trim() && o.name === req.body.name.trim();
+	});
+	if (office) {
 		return res.status(400).json({
 			status: 400,
-			error: error.details[0].message
+			error: 'The office of type: <' + req.body.type.trim() + '> and name: <' + req.body.name.trim() + '> is already registered.'
 		});
 	}
 	// Register office
 	var newOffice = {
 		id: _offices2.default.length + 1,
-		type: req.body.type,
-		name: req.body.name
+		type: req.body.type.trim(),
+		name: req.body.name.trim()
 	};
 	_offices2.default.push(newOffice);
 	return res.status(201).json({
