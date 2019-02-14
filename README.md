@@ -36,16 +36,19 @@ The instructions below will get you a copy of this project up and running on you
 To be able to run this project on your local machine you need to install Nodejs along with npm.
 Click [here](https://nodejs.org/en/download/) to download and install Nodejs.
 Then open your terminal and run `npm install npm@latest -g` to install npm globally on your system.
-To check if Nodejs and npm are installed, open your terminal and run `node -v && npm -v`. It should display the version number you have installed. 
+To check if Nodejs and npm are installed, open your terminal and run `node -v && npm -v`.
+It should display the version number you have installed. 
 
 ### Installation
-1. Open your terminal and run `git clone https://github.com/the22mastermind/politico.git`. It should copy this project on your local system.
+1. Open your terminal and run `git clone https://github.com/the22mastermind/politico.git`. 
+It should copy this project on your local system.
 2. `cd politico` to cd into the project folder.
 3. `npm install` to install the dependencies.
 
 ### Running the server and Tests
 * `npm run start` to start the server locally. It should display "Politico running on port #"
-* `npm run test` to check if all the tests are passing. It should display a list of all the tests and a test coverage summary table.
+* `npm run test` to check if all the tests are passing.
+It should display a list of all the tests and a test coverage summary table.
 
 ### Testing with POSTMAN
 Postman is an API development environment used for creating and testing APIs by sending HTTP requests.
@@ -60,3 +63,6 @@ Bertrand 'The mastermind' Masabo
 
 ### Contributors
 * Alex Mochu
+
+### References
+* https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
