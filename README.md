@@ -46,7 +46,7 @@ It should copy this project on your local system.
 3. `npm install` to install the dependencies.
 
 ### Running the server and Tests
-* `npm run start` to start the server locally. It should display "Politico running on port #"
+* `npm run dev` to start the server locally. It should display "Politico running on port #"
 * `npm run test` to check if all the tests are passing.
 It should display a list of all the tests and a test coverage summary table.
 

@@ -31,6 +31,7 @@
     "build-babel": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-babel",
     "start": "npm run build && node ./build/index.js",
+    "dev": "nodemon src/index.js --exec babel-node --",
     "lint": "node_modules/.bin/eslint",
     "coverage": "istanbul cover _mocha -- --compilers js:babel-register src/tests/*.js --exit",
     "showcoverage": "xdg-open coverage/lcov-report/index.html",

@@ -16,16 +16,21 @@ function validateSignUp(user) {
 
 function validateCreateParty(party) {
   const schema = {
-    name: Joi.string().regex(/^[a-zA-Z0-9] |[a-zA-Z0-9] ?[a-zA-Z0-9]+$/).min(3).max(30).trim().required(),
+    name: Joi.string().regex(/^[a-zA-Z0-9 ]+$|^[a-zA-Z0-9 ]+$^[a-zA-Z0-9]+$/).min(3).max(30).trim().required(),
     hqaddress: Joi.string().min(3).max(100).required(),
     logourl: Joi.string().max(200).required()
   };
-  return Joi.validate(party, schema);
+  const options = {
+    language: {
+      key: '{{key}} '
+    }
+  };
+  return Joi.validate(party, schema, options);
 };
 
 function validateEditParty(party) {
   const schema = {
-    name: Joi.string().regex(/^[a-zA-Z0-9] |[a-zA-Z0-9] ?[a-zA-Z0-9]+$/).min(3).max(30).required(),
+    name: Joi.string().regex(/^[a-zA-Z0-9 ]+$|^[a-zA-Z0-9 ]+$^[a-zA-Z0-9]+$/).min(3).max(30).required(),
   };
   return Joi.validate(party, schema);
 };
@@ -33,7 +38,7 @@ function validateEditParty(party) {
 function validateCreateOffice(office) {
   const schema = {
     type: Joi.string().valid(['federal','legislative','state','local government']).min(3).max(30).trim().required(),
-    name: Joi.string().regex(/^[a-zA-Z] |[a-zA-Z] ?[a-zA-Z]+$/).min(3).max(30).required()
+    name: Joi.string().regex(/^[a-zA-Z ]+$|^[a-zA-Z ]+$^[a-zA-Z]+$/).min(3).max(30).required()
   };
   return Joi.validate(office, schema);
 };
