@@ -12,13 +12,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function validateSignUp(user) {
   var schema = {
-    firstname: _joi2.default.string().min(3).max(30).required(),
-    lastname: _joi2.default.string().min(3).max(30).required(),
+    firstname: _joi2.default.string().regex(/^[a-zA-Z0-9]+$/).min(3).max(30).required(),
+    lastname: _joi2.default.string().regex(/^[a-zA-Z0-9]+$/).min(3).max(30).required(),
     othername: _joi2.default.string().max(30).optional(),
     email: _joi2.default.string().email().required(),
-    phonenumber: _joi2.default.string().min(10).max(15).required(),
-    passporturl: _joi2.default.string().min(3).max(100).required(),
-    password: _joi2.default.string().min(8).max(15).required(),
+    phonenumber: _joi2.default.string().regex(/^[+][0-9]+$/).min(10).max(15).required(),
+    passporturl: _joi2.default.string().regex(/^[a-zA-Z] |[a-zA-Z0-9]+$/).min(3).max(100).required(),
+    password: _joi2.default.string().regex(/^[a-zA-Z0-9] |[a-zA-Z0-9]+$/).min(8).max(15).required(),
     isadmin: _joi2.default.boolean().optional()
   };
   return _joi2.default.validate(user, schema);
@@ -26,7 +26,7 @@ function validateSignUp(user) {
 
 function validateCreateParty(party) {
   var schema = {
-    name: _joi2.default.string().min(3).max(30).required(),
+    name: _joi2.default.string().regex(/^[a-zA-Z0-9] |[a-zA-Z0-9] ?[a-zA-Z0-9]+$/).min(3).max(30).trim().required(),
     hqaddress: _joi2.default.string().min(3).max(100).required(),
     logourl: _joi2.default.string().max(200).required()
   };
@@ -35,15 +35,15 @@ function validateCreateParty(party) {
 
 function validateEditParty(party) {
   var schema = {
-    name: _joi2.default.string().min(3).max(30).required()
+    name: _joi2.default.string().regex(/^[a-zA-Z0-9] |[a-zA-Z0-9] ?[a-zA-Z0-9]+$/).min(3).max(30).required()
   };
   return _joi2.default.validate(party, schema);
 };
 
 function validateCreateOffice(office) {
   var schema = {
-    type: _joi2.default.string().min(3).max(30).required(),
-    name: _joi2.default.string().min(3).max(30).required()
+    type: _joi2.default.string().valid(['federal', 'legislative', 'state', 'local government']).min(3).max(30).trim().required(),
+    name: _joi2.default.string().regex(/^[a-zA-Z] |[a-zA-Z] ?[a-zA-Z]+$/).min(3).max(30).required()
   };
   return _joi2.default.validate(office, schema);
 };

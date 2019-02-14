@@ -27,21 +27,22 @@ exports.createParty = async function (req, res) {
 		});
 	}
 	// Custom Validation
-
-	// // Check if party is already registered
-	// const party = await partyModel.find(p => p.name === req.body.name);
-	// if (party) {
-	// 	return res.status(400).json({
-	// 		status: 400,
-	// 		error: `The party ${req.body.name} is already registered.`
-	// 	});
-	// }
+	// Check if party is already registered
+	var party = await _parties2.default.find(function (p) {
+		return p.name === req.body.name.trim();
+	});
+	if (party) {
+		return res.status(400).json({
+			status: 400,
+			error: 'The party of name: <' + req.body.name + '> is already registered.'
+		});
+	}
 	// Register party
 	var newParty = {
 		id: _parties2.default.length + 1,
-		name: req.body.name,
-		hqaddress: req.body.hqaddress,
-		logourl: req.body.logourl,
+		name: req.body.name.trim(),
+		hqaddress: req.body.hqaddress.trim(),
+		logourl: req.body.logourl.trim(),
 		registeredon: (0, _moment2.default)().format('LLLL')
 	};
 	_parties2.default.push(newParty);
@@ -104,9 +105,7 @@ exports.editParty = async function (req, res) {
 	}
 	// Custom Validation
 	// Check if id is integer
-	var _req$params = req.params,
-	    id = _req$params.id,
-	    name = _req$params.name;
+	var id = req.params.id;
 
 	if (!Number.isInteger(parseInt(id, 10))) {
 		return res.status(400).json({
@@ -124,31 +123,15 @@ exports.editParty = async function (req, res) {
 			error: 'The party of id: ' + id + ' does not exist.'
 		});
 	}
-	var partyName = await _parties2.default.find(function (p) {
-		return p.name === name;
-	});
-	if (!partyName) {
-		return res.status(404).json({
-			status: 404,
-			error: 'The party of name: ' + name + ' does not exist.'
-		});
-	}
-	// Check if id and name is for same party
-	if (party.id !== partyName.id) {
-		return res.status(404).json({
-			status: 404,
-			error: 'Party of id: ' + id + ' and name: ' + name + ' not found.'
-		});
-	}
 	// Update party
 	var newPartyName = {
 		name: req.body.name
 	};
-	partyName.name = newPartyName.name;
+	party.name = newPartyName.name;
 	return res.status(200).json({
 		status: 200,
 		data: [{
-			id: partyName.id,
+			id: party.id,
 			name: newPartyName.name
 		}]
 	});

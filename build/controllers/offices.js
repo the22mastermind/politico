@@ -26,11 +26,21 @@ exports.createOffice = async function (req, res) {
 			error: error.details[0].message
 		});
 	}
+	// Check if office (type and name) is already registered
+	var office = await _offices2.default.find(function (o) {
+		return o.type === req.body.type.trim() && o.name === req.body.name.trim();
+	});
+	if (office) {
+		return res.status(400).json({
+			status: 400,
+			error: 'The office of type: <' + req.body.type.trim() + '> and name: <' + req.body.name.trim() + '> is already registered.'
+		});
+	}
 	// Register office
 	var newOffice = {
 		id: _offices2.default.length + 1,
-		type: req.body.type,
-		name: req.body.name
+		type: req.body.type.trim(),
+		name: req.body.name.trim()
 	};
 	_offices2.default.push(newOffice);
 	return res.status(201).json({

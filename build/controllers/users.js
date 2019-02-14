@@ -26,8 +26,6 @@ exports.userSignup = async function (req, res) {
 			error: error.details[0].message
 		});
 	}
-	// Custom Validation
-
 	// Check if email is already registered
 	var user = await _users2.default.find(function (u) {
 		return u.email === req.body.email;

@@ -19,7 +19,7 @@ var router = _express2.default.Router();
 router.post('/', _parties2.default.createParty);
 router.get('/', _parties2.default.viewAllParties);
 router.get('/:id', _parties2.default.viewSingleParty);
-router.patch('/:id/:name', _parties2.default.editParty);
+router.patch('/:id', _parties2.default.editParty);
 router.delete('/:id', _parties2.default.deleteParty);
 
 exports.default = router;

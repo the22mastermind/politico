@@ -37,12 +37,40 @@ describe('POST /api/v1/parties', function () {
   });
 });
 
+// Party already exists
 describe('POST /api/v1/parties', function () {
   it('Should return status code 400', function () {
     _chai2.default.request(_index2.default).post('/api/v1/parties').send({
-      name: '',
+      name: 'Political Party 10',
       hqaddress: 'Kigali, Rwanda',
-      logourl: ' '
+      logourl: 'https://www.google.com'
+    }).end(function (err, res) {
+      expect(res.status).to.equal(201);
+      expect(res.body).to.have.property('status');
+      expect(res.body).to.have.property('data');
+      expect(res.body.data).to.be.a('array');
+      expect(res.body.data[0].id).to.be.a('number');
+      expect(res.body.data[0].name).to.be.a('string');
+    });
+    // Send same data (checks party name)
+    _chai2.default.request(_index2.default).post('/api/v1/parties').send({
+      name: 'Political Party 10',
+      hqaddress: 'Kigali, Rwanda',
+      logourl: 'https://www.google.com'
+    }).end(function (err, res) {
+      expect(res.status).to.equal(400);
+      expect(res.body).to.have.property('status');
+    });
+  });
+});
+
+// Invalid data
+describe('POST /api/v1/parties', function () {
+  it('Should return status code 400', function () {
+    _chai2.default.request(_index2.default).post('/api/v1/parties').send({
+      name: '   ',
+      hqaddress: 'Kigali, Rwanda',
+      logourl: '   '
     }).end(function (err, res) {
       expect(res.status).to.equal(400);
       expect(res.body).to.have.property('status');
@@ -59,9 +87,6 @@ describe('GET /api/v1/parties', function () {
       expect(res.body).to.have.property('status');
       expect(res.body).to.have.property('data');
       expect(res.body.data).to.be.a('array');
-      expect(res.body.data[0].id).to.be.a('number');
-      expect(res.body.data[0].name).to.be.a('string');
-      expect(res.body.data[0].logourl).to.be.a('string');
     });
   });
 });
@@ -103,12 +128,11 @@ describe('GET /api/v1/parties/<party-id>', function () {
 });
 // ***********************************************
 // EDIT PARTY NAME
-describe('PATCH /api/v1/parties/<party-id>/name', function () {
+describe('PATCH /api/v1/parties/<party-id>', function () {
   it('Should return status code 200', function () {
     var partyId = 1;
-    var partyName = 'Political Party 1';
     var newPartyName = { name: 'Updated Party 1' };
-    _chai2.default.request(_index2.default).patch('/api/v1/parties/' + partyId + '/' + partyName).send(newPartyName).end(function (err, res) {
+    _chai2.default.request(_index2.default).patch('/api/v1/parties/' + partyId).send(newPartyName).end(function (err, res) {
       expect(res.status).to.equal(200);
       expect(res.body).to.have.property('status');
       expect(res.body).to.have.property('data');
@@ -120,13 +144,12 @@ describe('PATCH /api/v1/parties/<party-id>/name', function () {
   });
 });
 
-// Invalid party name
-describe('PATCH /api/v1/parties/<party-id>/name', function () {
+// Unexisting party id
+describe('PATCH /api/v1/parties/<party-id>', function () {
   it('Should return status code 404', function () {
-    var partyId = 1;
-    var partyName = 'Some name';
+    var partyId = 100;
     var newPartyName = { name: 'Updated Party 1' };
-    _chai2.default.request(_index2.default).patch('/api/v1/parties/' + partyId + '/' + partyName).send(newPartyName).end(function (err, res) {
+    _chai2.default.request(_index2.default).patch('/api/v1/parties/' + partyId).send(newPartyName).end(function (err, res) {
       expect(res.status).to.equal(404);
       expect(res.body).to.have.property('status');
     });
@@ -134,58 +157,35 @@ describe('PATCH /api/v1/parties/<party-id>/name', function () {
 });
 
 // Invalid party id
-describe('PATCH /api/v1/parties/<party-id>/name', function () {
+describe('PATCH /api/v1/parties/<party-id>', function () {
   it('Should return status code 400', function () {
     var partyId = 'invalid id';
-    var partyName = 'Political Party 1';
     var newPartyName = { name: 'Updated Party 1' };
-    _chai2.default.request(_index2.default).patch('/api/v1/parties/' + partyId + '/' + partyName).send(newPartyName).end(function (err, res) {
+    _chai2.default.request(_index2.default).patch('/api/v1/parties/' + partyId).send(newPartyName).end(function (err, res) {
       expect(res.status).to.equal(400);
-      expect(res.body).to.have.property('status');
-    });
-  });
-});
-
-// id and name exist but not belonging to same party
-describe('PATCH /api/v1/parties/<party-id>/name', function () {
-  it('Should return status code 404', function () {
-    // create another party
-    _chai2.default.request(_index2.default).post('/api/v1/parties').send({
-      name: 'Political Party 2',
-      hqaddress: 'Kigali, Rwanda',
-      logourl: 'https://www.google.fr'
-    });
-    // try updating party
-    var partyId = 2;
-    var partyName = 'Political Party 1';
-    var newPartyName = { name: 'Updated Party 1' };
-    _chai2.default.request(_index2.default).patch('/api/v1/parties/' + partyId + '/' + partyName).send(newPartyName).end(function (err, res) {
-      expect(res.status).to.equal(404);
       expect(res.body).to.have.property('status');
     });
   });
 });
 
 // Invalid edit form (empty party name)
-describe('PATCH /api/v1/parties/<party-id>/name', function () {
+describe('PATCH /api/v1/parties/<party-id>', function () {
   it('Should return status code 400', function () {
     var partyId = 1;
-    var partyName = 'Some name';
     var newPartyName = { name: '' };
-    _chai2.default.request(_index2.default).patch('/api/v1/parties/' + partyId + '/' + partyName).send(newPartyName).end(function (err, res) {
+    _chai2.default.request(_index2.default).patch('/api/v1/parties/' + partyId).send(newPartyName).end(function (err, res) {
       expect(res.status).to.equal(400);
       expect(res.body).to.have.property('status');
     });
   });
 });
 
-// Check if id is number and name is string
-describe('PATCH /api/v1/parties/<party-id>/name', function () {
+// Check if id is number
+describe('PATCH /api/v1/parties/<party-id>', function () {
   it('Should return status code 404', function () {
     var partyId = 100;
-    var partyName = 'Party 1';
     var newPartyName = { name: 'New Party Name' };
-    _chai2.default.request(_index2.default).patch('/api/v1/parties/' + partyId + '/' + partyName).send(newPartyName).end(function (err, res) {
+    _chai2.default.request(_index2.default).patch('/api/v1/parties/' + partyId).send(newPartyName).end(function (err, res) {
       expect(res.status).to.equal(404);
       expect(res.body).to.have.property('status');
     });
