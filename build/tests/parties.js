@@ -72,7 +72,6 @@ describe('POST /api/v1/parties', function () {
       hqaddress: 'Kigali, Rwanda',
       logourl: '   '
     }).end(function (err, res) {
-      console.log(res.body);
       expect(res.status).to.equal(400);
       expect(res.body).to.have.property('status');
       expect(res.body).to.have.property('error');
@@ -95,21 +94,8 @@ describe('GET /api/v1/parties', function () {
 // VIEW SINGLE PARTY
 describe('GET /api/v1/parties/<party-id>', function () {
   it('Should return status code 200', function () {
-    _chai2.default.request(_index2.default).post('/api/v1/parties').send({
-      name: 'Political Party 1',
-      hqaddress: 'Kigali, Rwanda',
-      logourl: 'https://www.google.com'
-    }).end(function (err, res) {
-      expect(res.status).to.equal(201);
-      expect(res.body).to.have.property('status');
-      expect(res.body).to.have.property('data');
-      expect(res.body.data).to.be.a('array');
-      expect(res.body.data[0].id).to.be.a('number');
-      expect(res.body.data[0].name).to.be.a('string');
-    });
     var partyId = 1;
     _chai2.default.request(_index2.default).get('/api/v1/parties/' + partyId).end(function (err, res) {
-      console.log(res.body);
       expect(res.status).to.equal(200);
       expect(res.body).to.have.property('status');
       expect(res.body).to.have.property('data');

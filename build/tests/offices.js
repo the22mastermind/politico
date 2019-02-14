@@ -89,7 +89,6 @@ describe('GET /api/v1/offices/<office-id>', function () {
     });
     var officeId = 1;
     _chai2.default.request(_index2.default).get('/api/v1/offices/' + officeId).end(function (err, res) {
-      console.log(res.body);
       expect(res.status).to.equal(200);
       expect(res.body).to.have.property('status');
       expect(res.body).to.have.property('data');
