@@ -103,15 +103,21 @@ exports.editParty = async function (req, res) {
 	}
 	// Update party
 	const newPartyName = {
-		name: req.body.name
+		name: req.body.name,
+		hqaddress: req.body.hqaddress,
+		logourl: req.body.logourl
 	};
 	party.name = newPartyName.name;
+	party.hqaddress = newPartyName.hqaddress;
+	party.logourl = newPartyName.logourl;
 	return res.status(200).json({
 		status: 200,
 		data: [
 		  {
 		  	id: party.id,
-		  	name: newPartyName.name
+		  	name: newPartyName.name,
+		  	hqaddress: newPartyName.hqaddress,
+		  	logourl: newPartyName.logourl
 		  }
 		]
 	});
