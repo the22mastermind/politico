@@ -137,8 +137,27 @@ describe('GET /api/v1/parties/<party-id>', () => {
 // EDIT PARTY NAME
 describe('PATCH /api/v1/parties/<party-id>', () => {
   it('Should return status code 200', () => {
+    chai.request(app)
+      .post('/api/v1/parties')
+      .send({
+        name: 'Political 1',
+        hqaddress: 'Kigali, Rwanda',
+        logourl: 'https://www.google.com'
+      })
+      .end((err, res) => {
+        expect(res.status).to.equal(201);
+        expect(res.body).to.have.property('status');
+        expect(res.body).to.have.property('data');
+        expect(res.body.data).to.be.a('array');
+        expect(res.body.data[0].id).to.be.a('number');
+        expect(res.body.data[0].name).to.be.a('string');
+      });
     let partyId = 1;
-    let newPartyName = { name: 'Updated Party 1' };
+    let newPartyName = {
+      name: 'Updated Party 1',
+      hqaddress: 'Kigali, Rwanda',
+      logourl: 'https://www.google.rw'
+    };
     chai.request(app)
       .patch(`/api/v1/parties/${partyId}`)
       .send(newPartyName)
@@ -158,7 +177,11 @@ describe('PATCH /api/v1/parties/<party-id>', () => {
 describe('PATCH /api/v1/parties/<party-id>', () => {
   it('Should return status code 404', () => {
     let partyId = 100;
-    let newPartyName = { name: 'Updated Party 1' };
+    let newPartyName = {
+      name: 'Updated Party 1',
+      hqaddress: 'Kigali, Rwanda',
+      logourl: 'https://www.google.rw'
+    };
     chai.request(app)
       .patch(`/api/v1/parties/${partyId}`)
       .send(newPartyName)
@@ -173,7 +196,11 @@ describe('PATCH /api/v1/parties/<party-id>', () => {
 describe('PATCH /api/v1/parties/<party-id>', () => {
   it('Should return status code 400', () => {
     let partyId = 'invalid id';
-    let newPartyName = { name: 'Updated Party 1' };
+    let newPartyName = {
+      name: 'Updated Party 1',
+      hqaddress: 'Kigali, Rwanda',
+      logourl: 'https://www.google.rw'
+    };
     chai.request(app)
       .patch(`/api/v1/parties/${partyId}`)
       .send(newPartyName)
@@ -188,7 +215,11 @@ describe('PATCH /api/v1/parties/<party-id>', () => {
 describe('PATCH /api/v1/parties/<party-id>', () => {
   it('Should return status code 400', () => {
     let partyId = 1;
-    let newPartyName = { name: '' };
+    let newPartyName = {
+      name: '',
+      hqaddress: 'Kigali, Rwanda',
+      logourl: 'https://www.google.rw'
+    };
     chai.request(app)
       .patch(`/api/v1/parties/${partyId}`)
       .send(newPartyName)
@@ -203,7 +234,11 @@ describe('PATCH /api/v1/parties/<party-id>', () => {
 describe('PATCH /api/v1/parties/<party-id>', () => {
   it('Should return status code 404', () => {
     let partyId = 100;
-    let newPartyName = { name: 'New Party Name' };
+    let newPartyName = {
+      name: 'New Party Name',
+      hqaddress: 'Kigali, Rwanda',
+      logourl: 'https://www.google.rw'
+    };
     chai.request(app)
       .patch(`/api/v1/parties/${partyId}`)
       .send(newPartyName)

@@ -11,7 +11,10 @@
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "joi": "^14.3.1",
-    "moment": "^2.24.0"
+    "jsonwebtoken": "^8.4.0",
+    "make-runnable": "^1.3.6",
+    "moment": "^2.24.0",
+    "pg": "^7.8.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
@@ -26,11 +29,15 @@
     "nyc": "^13.1.0"
   },
   "scripts": {
+    "dropdb": "babel-node ./src/database dropdb",
+    "droptables": "babel-node ./src/database dropTables",
+    "create": "babel-node ./src/database createTables",
     "test": "NODE_ENV=test istanbul cover _mocha -- --compilers js:babel-register src/tests/*.js --exit",
     "clean": "rm -rf build && mkdir build",
     "build-babel": "babel -d ./build ./src -s",
     "build": "npm run clean && npm run build-babel",
     "start": "npm run build && node ./build/index.js",
+    "dev": "nodemon src/index.js --exec babel-node --",
     "lint": "node_modules/.bin/eslint",
     "coverage": "istanbul cover _mocha -- --compilers js:babel-register src/tests/*.js --exit",
     "showcoverage": "xdg-open coverage/lcov-report/index.html",
