@@ -45,11 +45,12 @@ exports.userSignup = async function (req, res) {
 				password: req.body.password.trim(),
 				phonenumber: req.body.phonenumber.trim(),
 				passporturl: req.body.passporturl.trim(),
-				registeredon: moment().format('LLLL')
+				registeredon: moment().format('LLLL'),
+				role: 'user'
 			};
 			// Persist user data in db
 			try {
-				pool.query('INSERT INTO users(firstname,lastname,othername,email,phonenumber,password,passporturl,registered) VALUES($1,$2,$3,$4,$5,$6,$7,$8)',
+				pool.query('INSERT INTO users(firstname,lastname,othername,email,phonenumber,password,passporturl,registered,role) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)',
 				[
 					newUser.firstname,
 					newUser.lastname,
@@ -58,12 +59,14 @@ exports.userSignup = async function (req, res) {
 					newUser.phonenumber,
 					newUser.password,
 					newUser.passporturl,
-					newUser.registeredon
+					newUser.registeredon,
+					newUser.role
 				]);
 				// Create token
 				const token = jwt.sign(
 					{
-						email: newUser.email
+						email: newUser.email,
+						role: newUser.role
 					},
 					process.env.JWT_KEY,
 					{
@@ -74,10 +77,14 @@ exports.userSignup = async function (req, res) {
 					status: 201,
 					data: [
 						{
-							firstname: newUser.firstname,
-							lastname: newUser.lastname,
-							registeredon: newUser.registeredon,
-							token: token
+							token: token,
+							user: {
+								firstname: newUser.firstname,
+								lastname: newUser.lastname,
+								email: newUser.email,
+								registeredon: newUser.registeredon,
+								role: newUser.role
+							}
 						}
 					],
 					message: 'Success!'
@@ -101,14 +108,13 @@ exports.userSignup = async function (req, res) {
 exports.fetchAllUsers = async function (req, res) {
 	try {
 		// Fetch all users by latest
-		const users = await pool.query('SELECT id, firstname, lastname, email, phonenumber, registered FROM users ORDER BY id DESC');
+		const users = await pool.query('SELECT id, firstname, lastname, email, phonenumber, registered, role FROM users ORDER BY id DESC');
 		return res.status(200).json({
 			message: `${users.rows.length}, users found.`,
 			status: 200,
 			data: users.rows
 		});
 	} catch (error) {
-		console.log(error);
 		return res.status(500).json({
 			status: 500,
 			error: 'Internal server error'

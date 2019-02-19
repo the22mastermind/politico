@@ -70,7 +70,7 @@ const createTables = () => {
       password varchar NOT NULL,
       passporturl varchar NOT NULL,
       registered timestamptz,
-      isadmin boolean DEFAULT FALSE
+      role varchar(9) NOT NULL
     );`;
   
   const queryParties =
