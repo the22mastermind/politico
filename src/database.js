@@ -4,19 +4,11 @@ import pool from './database/connector';
 
 dotenv.config();
 
-// const pool = new pg.Pool({
-//   user: 'postgres',
-//   host: 'localhost',
-//   database: 'politico',
-//   password: 'rastafari',
-//   port: 5432,
-// });
-
 pool.on('connect', () => {
   console.log('Connected to PSQL db');
 });
 
-console.log(pool);
+// console.log(pool);
 
 // Create Tables
 const dropdb = () => {
@@ -46,7 +38,7 @@ const dropTables = () => {
   const offices = `DROP TABLE IF EXISTS offices CASCADE;`;
   const candidates = `DROP TABLE IF EXISTS candidates CASCADE;`;
   const votes = `DROP TABLE IF EXISTS votes CASCADE;`;
-  const petitions = `DROP TABLE IF EXISTS petition CASCADE;`;
+  const petitions = `DROP TABLE IF EXISTS petitions CASCADE;`;
   const con = `${users};${parties};${offices};${candidates};${votes};${petitions};`;
   
   pool.query(con)
