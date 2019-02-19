@@ -1,10 +1,13 @@
 import express from 'express';
 import controller from '../controllers/offices';
+import authenticate from '../middlewares/check-auth';
+import isadmin from '../middlewares/check-role';
+import isinteger from '../middlewares/check-integer';
 
 const router = express.Router();
 
-router.post('/', controller.createOffice);
+router.post('/', authenticate, isadmin, controller.createOffice);
 router.get('/', controller.viewAllOffices);
-router.get('/:id', controller.viewSpecificOffice);
+router.get('/:id', isinteger, controller.viewSpecificOffice);
 
 export default router;

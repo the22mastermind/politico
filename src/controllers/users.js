@@ -1,4 +1,3 @@
-import userModel from '../models/users';
 import validator from '../middlewares/validation';
 import moment from 'moment';
 import bcrypt from 'bcrypt';
@@ -40,13 +39,13 @@ exports.userSignup = async function (req, res) {
 			const newUser = {
 				firstname: req.body.firstname.trim(),
 				lastname: req.body.lastname.trim(),
-				othername: req.body.othername.trim() ? req.body.othername : ' ',
+				othername: req.body.othername ? req.body.othername : ' ',
 				email: req.body.email.trim(),
 				password: hash,
 				phonenumber: req.body.phonenumber.trim(),
 				passporturl: req.body.passporturl.trim(),
 				registeredon: moment().format('LLLL'),
-				role: 'user'
+				role: 'admin'
 			};
 			// Persist user data in db
 			try {
