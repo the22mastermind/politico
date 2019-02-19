@@ -42,7 +42,7 @@ exports.userSignup = async function (req, res) {
 				lastname: req.body.lastname.trim(),
 				othername: req.body.othername.trim() ? req.body.othername : ' ',
 				email: req.body.email.trim(),
-				password: req.body.password.trim(),
+				password: hash,
 				phonenumber: req.body.phonenumber.trim(),
 				passporturl: req.body.passporturl.trim(),
 				registeredon: moment().format('LLLL'),
@@ -118,6 +118,74 @@ exports.fetchAllUsers = async function (req, res) {
 		return res.status(500).json({
 			status: 500,
 			error: 'Internal server error'
+		});
+	}
+};
+
+exports.userLogin = async function (req, res) {
+	// Form validation
+	const { error } = validator.validateLogin(req.body);
+	if (error) {
+		return res.status(400).json({
+			status: 400,
+			error: error.details[0].message
+		});
+	}
+	try {
+		const user = await pool.query('SELECT * FROM users WHERE email=$1', [req.body.email.trim()]);
+		if (user.rows.length !== 0) {
+			// Check user password
+			bcrypt.compare(req.body.password.trim(), user.rows[0].password, (err, result) => {
+				if (err) {
+					return res.status(500).json({
+						status: 500,
+						error: err
+					});
+				}
+				if (result) {
+					const token = jwt.sign(
+						{
+							email: user.rows[0].email,
+							userId: user.rows[0].id
+						},
+						process.env.JWT_KEY,
+						{
+							expiresIn: '6h'
+						}
+					);
+					return res.status(200).json({
+						status: 200,
+						message: `Welcome, ${user.rows[0].firstname}! You are now logged in.`,
+						data: [
+							{
+								token: token,
+								user: {
+									id: user.rows[0].id,
+									firstname: user.rows[0].firstname,
+									lastname: user.rows[0].lastname,
+									email: user.rows[0].email,
+									role: user.rows[0].role
+								}
+							}
+						]
+					});
+				} else {
+					return res.status(404).json({
+						status: 404,
+						error: 'Invalid username or password. Please try again.'
+					});
+				}
+			});
+		} else {
+			return res.status(404).json({
+				status: 404,
+				error: 'User not found. Please sign up.'
+			});
+		}
+	} catch (error) {
+		return res.status(404).json({
+			status: 404,
+			error: error
 		});
 	}
 };

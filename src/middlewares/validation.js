@@ -45,9 +45,18 @@ function validateCreateOffice(office) {
   return Joi.validate(office, schema);
 };
 
+function validateLogin(user) {
+  const schema = {
+    email: Joi.string().email().required(),
+    password: Joi.string().regex(/^[a-zA-Z0-9] |[a-zA-Z0-9]+$/).min(8).max(15).required()
+  };
+  return Joi.validate(user, schema);
+};
+
 export default {
   validateSignUp,
   validateCreateParty,
   validateEditParty,
-  validateCreateOffice
+  validateCreateOffice,
+  validateLogin
 };
