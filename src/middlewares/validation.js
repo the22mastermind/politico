@@ -9,7 +9,7 @@ function validateSignUp(user) {
     phonenumber: Joi.string().regex(/^[+][0-9]+$/).min(10).max(15).required(),
     passporturl: Joi.string().regex(/^[a-zA-Z] |[a-zA-Z0-9]+$/).min(3).max(100).required(),
     password: Joi.string().regex(/^[a-zA-Z0-9] |[a-zA-Z0-9]+$/).min(8).max(15).required(),
-    isadmin: Joi.boolean().optional(),
+    role: Joi.string().max(9).optional(),
   };
   return Joi.validate(user, schema);
 };
@@ -53,10 +53,28 @@ function validateLogin(user) {
   return Joi.validate(user, schema);
 };
 
+function validateCandidate(candidate) {
+  const schema = {
+    party: Joi.number().integer().min(1).required(),
+    user: Joi.number().integer().min(1).required()
+  };
+  return Joi.validate(candidate, schema);
+};
+
+function validateVote(vote) {
+  const schema = {
+    office: Joi.number().integer().min(1).required(),
+    candidate: Joi.number().integer().min(1).required()
+  };
+  return Joi.validate(vote, schema);
+};
+
 export default {
   validateSignUp,
   validateCreateParty,
   validateEditParty,
   validateCreateOffice,
-  validateLogin
+  validateLogin,
+  validateCandidate,
+  validateVote
 };

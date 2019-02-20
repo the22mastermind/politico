@@ -45,7 +45,7 @@ exports.userSignup = async function (req, res) {
 				phonenumber: req.body.phonenumber.trim(),
 				passporturl: req.body.passporturl.trim(),
 				registeredon: moment().format('LLLL'),
-				role: 'admin'
+				role: req.body.role ? req.body.role: 'user'
 			};
 			// Persist user data in db
 			try {
@@ -61,29 +61,15 @@ exports.userSignup = async function (req, res) {
 					newUser.registeredon,
 					newUser.role
 				]);
-				// Create token
-				const token = jwt.sign(
-					{
-						email: newUser.email,
-						role: newUser.role
-					},
-					process.env.JWT_KEY,
-					{
-						expiresIn: '6h'
-					}
-				);
 				return res.status(201).json({
 					status: 201,
 					data: [
 						{
-							token: token,
-							user: {
-								firstname: newUser.firstname,
-								lastname: newUser.lastname,
-								email: newUser.email,
-								registeredon: newUser.registeredon,
-								role: newUser.role
-							}
+							firstname: newUser.firstname,
+							lastname: newUser.lastname,
+							email: newUser.email,
+							registeredon: newUser.registeredon,
+							role: newUser.role
 						}
 					],
 					message: 'Success!'
@@ -145,7 +131,8 @@ exports.userLogin = async function (req, res) {
 					const token = jwt.sign(
 						{
 							email: user.rows[0].email,
-							userId: user.rows[0].id
+							userId: user.rows[0].id,
+							role: user.rows[0].role
 						},
 						process.env.JWT_KEY,
 						{

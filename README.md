@@ -17,17 +17,21 @@ while building trust in the process through transparency
 | * Express  |                 |             |                   |
 
 ### API Endpoints
-| Endpoint | Method                | Description                                 |
-| :--------| :---------------------| :-------------------------------------------|
-| POST     | `/users/signup`       | Create a new user                           |
-| POST     | `/parties`            | Create a political party                    |
-| GET      | `/parties`            | Fetch all political parties                 |
-| GET      | `/parties/<party-id>` | Fetch a specific political party            |
-| PATCH    | `/parties/<party-id>` | Edit the name of a specific political party |
-| DELETE   | `/parties/<party-id>` | Delete a specific political party           |
-| POST     | `/offices`            | Create a political office                   |
-| GET      | `/offices`            | Fetch all political offices                 |
-| GET      | `/offices<office-id>` | Fetch a specific political office           |
+| Endpoint | Method                         | Description                                 |
+| :--------| :------------------------------| :-------------------------------------------|
+| POST     | `/users/auth/signup`           | Create a new user                           |
+| POST     | `/users/auth/login`            | Login a new user                            |
+| POST     | `/parties`                     | Create a political party                    |
+| GET      | `/parties`                     | Fetch all political parties                 |
+| GET      | `/parties/<party-id>`          | Fetch a specific political party            |
+| PATCH    | `/parties/<party-id>`          | Edit the name of a specific political party |
+| DELETE   | `/parties/<party-id>`          | Delete a specific political party           |
+| POST     | `/offices`                     | Create a political office                   |
+| GET      | `/offices`                     | Fetch all political offices                 |
+| GET      | `/offices<office-id>`          | Fetch a specific political office           |
+| POST     | `/offices<office-id>/register` | Register a candidate as a politician        |
+| GET      | `/offices<office-id>/result`   | Fetch result of office after election       |
+| POST     | `/votes`                       | Vote for a candidate                        |
 
 ### Getting Started
 The instructions below will get you a copy of this project up and running on your local machine for development and testing purposes. See deployment for steps on how to deploy this project on a production system.
@@ -63,6 +67,8 @@ Bertrand 'The mastermind' Masabo
 
 ### Contributors
 * Alex Mochu
+* Harriet Ayugi
 
 ### References
 * https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
+* https://www.w3schools.com

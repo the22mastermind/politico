@@ -90,20 +90,21 @@ const createTables = () => {
   
   const queryCandidate =
     `CREATE TABLE IF NOT EXISTS candidates (
-      id serial PRIMARY KEY,
+      id serial UNIQUE NOT NULL,
       office int REFERENCES offices ON DELETE CASCADE,
       party int REFERENCES parties ON DELETE CASCADE,
-      candidate int REFERENCES users ON DELETE CASCADE
+      candidate int REFERENCES users ON DELETE CASCADE,
+      PRIMARY KEY (candidate, office)
     );`;
   
   const queryVote =
     `CREATE TABLE IF NOT EXISTS votes (
-      id serial PRIMARY KEY,
-      hasvoted boolean DEFAULT FALSE,
+      id serial UNIQUE NOT NULL,
       createdon timestamptz,
-      createdby int REFERENCES users ON DELETE CASCADE,
-      office int REFERENCES offices ON DELETE CASCADE,
-      candidate int REFERENCES candidates ON DELETE CASCADE
+      voter int REFERENCES users(id) ON DELETE CASCADE,
+      office int REFERENCES offices(id) ON DELETE CASCADE,
+      candidate int REFERENCES candidates(id) ON DELETE CASCADE,
+      PRIMARY KEY (office, voter)
     );`;
 
   const queryPetition =

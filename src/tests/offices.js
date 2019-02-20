@@ -16,6 +16,7 @@ describe('POST /api/v1/offices', () => {
         name: 'Senate',
       })
       .end((err, res) => {
+        console.log(res.body);
         expect(res.status).to.equal(201);
         expect(res.body).to.have.property('status');
         expect(res.body).to.have.property('data');
