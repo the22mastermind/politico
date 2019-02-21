@@ -34,7 +34,7 @@ describe('POST /', () => {
 describe('POST /api/v1/users/signup', () => {
   it('Should return status code 201', () => {
     chai.request(app)
-      .post('/api/v1/users/signup')
+      .post('/api/v1/users/auth/signup')
       .send({
       	firstname: 'John',
       	lastname: 'Doe',
@@ -43,9 +43,10 @@ describe('POST /api/v1/users/signup', () => {
       	password: 'johndoe@2019',
       	phonenumber: '+250787770000',
       	passporturl: 'https://www.google.com',
-      	isadmin: true
+      	role: 'admin'
       })
       .end((err, res) => {
+        // console.log('**** ', res.body);
         expect(res.status).to.equal(201);
         expect(res.body).to.have.property('status');
         expect(res.body).to.have.property('data');
@@ -57,10 +58,10 @@ describe('POST /api/v1/users/signup', () => {
 });
 
 // Invalid signup form
-describe('POST /api/v1/users/signup', () => {
+describe('POST /api/v1/users/auth/signup', () => {
   it('Should return status code 400', () => {
     chai.request(app)
-      .post('/api/v1/users/signup')
+      .post('/api/v1/users/auth/signup')
       .send({
       	firstname: '',
       	lastname: '',
@@ -83,7 +84,7 @@ describe('POST /api/v1/users/signup', () => {
   it('Should return status code 400', () => {
     // Register user
     chai.request(app)
-      .post('/api/v1/users/signup')
+      .post('/api/v1/users/auth/signup')
       .send({
         firstname: 'John',
         lastname: 'Doe',
@@ -92,9 +93,10 @@ describe('POST /api/v1/users/signup', () => {
         password: 'johndoe@2019',
         phonenumber: '+250787770000',
         passporturl: 'https://www.google.com',
-        isadmin: true
+        role: 'admin'
       })
       .end((err, res) => {
+        // console.log('&&&& ', res.body);
         expect(res.status).to.equal(201);
         expect(res.body).to.have.property('status');
         expect(res.body).to.have.property('data');
@@ -104,7 +106,7 @@ describe('POST /api/v1/users/signup', () => {
       });
     // Try registering same email again
     chai.request(app)
-      .post('/api/v1/users/signup')
+      .post('/api/v1/users/auth/signup')
       .send({
         firstname: 'John',
         lastname: 'Doe',
@@ -113,9 +115,10 @@ describe('POST /api/v1/users/signup', () => {
         password: 'johndoe@2019',
         phonenumber: '+250787770000',
         passporturl: 'https://www.google.com',
-        isadmin: true
+        role: 'admin'
       })
       .end((err, res) => {
+        // console.log('//// ', res.body);
         expect(res.status).to.equal(400);
         expect(res.body).to.have.property('status');
       });

@@ -113,9 +113,7 @@ exports.editParty = async function (req, res) {
 		const { id } = req.params;
 		// Check if party is already registered
 		const partyData = {
-			name: req.body.name.trim(),
-			hqaddress: req.body.hqaddress.trim(),
-			logourl: req.body.logourl.trim()
+			name: req.body.name.trim()
 		}
 		const party = await pool.query('SELECT * FROM parties WHERE id=$1', [id]);
 		if (party.rows.length === 0) {
@@ -125,11 +123,9 @@ exports.editParty = async function (req, res) {
 			});
 		}
 		// Update party obj
-		pool.query('UPDATE parties SET name=$1, hqaddress=$2, logourl=$3 where id=$4',
+		pool.query('UPDATE parties SET name=$1 where id=$2',
 		[
 			partyData.name,
-			partyData.hqaddress,
-			partyData.logourl,
 			id
 		]);
 		return res.status(201).json({
@@ -138,8 +134,8 @@ exports.editParty = async function (req, res) {
 			  {
 			  	id: id,
 			  	name: partyData.name,
-			  	hqaddress: partyData.hqaddress,
-			  	logourl: partyData.logourl,
+			  	hqaddress: party.rows[0].hqaddress,
+			  	logourl: party.rows[0].logourl,
 			  	registeredon: party.rows[0].registeredon
 			  }
 			]

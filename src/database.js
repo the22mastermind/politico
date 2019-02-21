@@ -8,8 +8,6 @@ pool.on('connect', () => {
   console.log('Connected to PSQL db');
 });
 
-// console.log(pool);
-
 // Create Tables
 const dropdb = () => {
   const drop = `DROP DATABASE IF EXISTS politico;`;

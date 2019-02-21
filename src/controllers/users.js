@@ -139,8 +139,8 @@ exports.userLogin = async function (req, res) {
 							expiresIn: '6h'
 						}
 					);
-					return res.status(200).json({
-						status: 200,
+					return res.status(201).json({
+						status: 201,
 						message: `Welcome, ${user.rows[0].firstname}! You are now logged in.`,
 						data: [
 							{
