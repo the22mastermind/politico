@@ -4,19 +4,11 @@ import pool from './database/connector';
 
 dotenv.config();
 
-// const pool = new pg.Pool({
-//   user: 'postgres',
-//   host: 'localhost',
-//   database: 'politico',
-//   password: 'rastafari',
-//   port: 5432,
-// });
-
 pool.on('connect', () => {
   console.log('Connected to PSQL db');
 });
 
-console.log(pool);
+// console.log(pool);
 
 // Create Tables
 const dropdb = () => {
@@ -46,7 +38,7 @@ const dropTables = () => {
   const offices = `DROP TABLE IF EXISTS offices CASCADE;`;
   const candidates = `DROP TABLE IF EXISTS candidates CASCADE;`;
   const votes = `DROP TABLE IF EXISTS votes CASCADE;`;
-  const petitions = `DROP TABLE IF EXISTS petition CASCADE;`;
+  const petitions = `DROP TABLE IF EXISTS petitions CASCADE;`;
   const con = `${users};${parties};${offices};${candidates};${votes};${petitions};`;
   
   pool.query(con)
@@ -78,7 +70,7 @@ const createTables = () => {
       password varchar NOT NULL,
       passporturl varchar NOT NULL,
       registered timestamptz,
-      isadmin boolean DEFAULT FALSE
+      role varchar(9) NOT NULL
     );`;
   
   const queryParties =
@@ -98,20 +90,21 @@ const createTables = () => {
   
   const queryCandidate =
     `CREATE TABLE IF NOT EXISTS candidates (
-      id serial PRIMARY KEY,
+      id serial UNIQUE NOT NULL,
       office int REFERENCES offices ON DELETE CASCADE,
       party int REFERENCES parties ON DELETE CASCADE,
-      candidate int REFERENCES users ON DELETE CASCADE
+      candidate int REFERENCES users ON DELETE CASCADE,
+      PRIMARY KEY (candidate, office)
     );`;
   
   const queryVote =
     `CREATE TABLE IF NOT EXISTS votes (
-      id serial PRIMARY KEY,
-      hasvoted boolean DEFAULT FALSE,
+      id serial UNIQUE NOT NULL,
       createdon timestamptz,
-      createdby int REFERENCES users ON DELETE CASCADE,
-      office int REFERENCES offices ON DELETE CASCADE,
-      candidate int REFERENCES candidates ON DELETE CASCADE
+      voter int REFERENCES users(id) ON DELETE CASCADE,
+      office int REFERENCES offices(id) ON DELETE CASCADE,
+      candidate int REFERENCES candidates(id) ON DELETE CASCADE,
+      PRIMARY KEY (office, voter)
     );`;
 
   const queryPetition =

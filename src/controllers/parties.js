@@ -1,6 +1,8 @@
-import partyModel from '../models/parties';
 import validator from '../middlewares/validation';
 import moment from 'moment';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import pool from '../database/connector';
 
 // create Party
 exports.createParty = async function (req, res) {
@@ -12,58 +14,76 @@ exports.createParty = async function (req, res) {
 			error: error.details[0].message
 		});
 	}
-	// Custom Validation
 	// Check if party is already registered
-	const party = await partyModel.find(p => p.name === req.body.name.trim());
-	if (party) {
-		return res.status(400).json({
-			status: 400,
-			error: `The party of name: <${req.body.name}> is already registered.`
-		});
-	}
-	// Register party
-	const newParty = {
-		id: partyModel.length + 1,
+	const partyData = {
 		name: req.body.name.trim(),
 		hqaddress: req.body.hqaddress.trim(),
 		logourl: req.body.logourl.trim(),
 		registeredon: moment().format('LLLL')
-	};
-	partyModel.push(newParty);
-	return res.status(201).json({
-		status: 201,
-		data: [
-		  {
-		  	id: newParty.id,
-		  	name: newParty.name
-		  }
-		]
-	});
+	}
+	const parties = await pool.query('SELECT * FROM parties WHERE name=$1', [partyData.name]);
+	if (parties.rows.length !== 0) {
+		return res.status(400).json({
+			status: 400,
+			error: `The party of name: <${partyData.name}> is already registered.`
+		});
+	}
+	// Register party
+	try {
+		pool.query('INSERT INTO parties(name, hqaddress, logourl, registeredon) VALUES($1,$2,$3,$4)',
+		[
+			partyData.name,
+			partyData.hqaddress,
+			partyData.logourl,
+			partyData.registeredon
+		]);
+		return res.status(201).json({
+			status: 201,
+			data: [
+			  {
+			  	name: partyData.name,
+			  	hqaddress: partyData.hqaddress,
+			  	logourl: partyData.logourl,
+			  	registeredon: partyData.registeredon,
+			  }
+			]
+		});
+	} catch (error) {
+		return res.status(404).json({
+			status: 404,
+			error: error
+		});
+	}
 };
 
 // view all Parties
 exports.viewAllParties = async function (req, res) {
-	return res.status(200).json({
-		status: 200,
-		data: partyModel
-	});
+	try {
+		// Fetch all parties by latest
+		const parties = await pool.query('SELECT * FROM parties ORDER BY id DESC');
+		return res.status(200).json({
+			message: `${parties.rows.length}, parties found.`,
+			status: 200,
+			data: parties.rows
+		});
+	} catch (error) {
+		return res.status(500).json({
+			status: 500,
+			error: 'Internal server error'
+		});
+	}
 };
 
 // view single Party
 exports.viewSingleParty = async function (req, res) {
-	// Check if param is integer
-	const { id } = req.params;
-	if (!Number.isInteger(parseInt(id, 10))) {
-		return res.status(400).json({
-			status: 400,
-			error: `${id} must be an integer`
-		});
-	} else {
-		const party = await partyModel.find(p => p.id === parseInt(id, 10));
-		if (party) {
+	try {
+		const { id } = req.params;
+		// Fetch all offices by latest
+		const party = await pool.query('SELECT * FROM parties WHERE id=$1', [id]);
+		if (party.rows.length !== 0) {
 			return res.status(200).json({
 				status: 200,
-				data: party
+				data: party.rows
 			});
 		} else {
 			return res.status(404).json({
@@ -71,6 +91,11 @@ exports.viewSingleParty = async function (req, res) {
 				error: `Party of id: ${id} not found`
 			});
 		}
+	} catch (error) {
+		return res.status(500).json({
+			status: 500,
+			error: error
+		});
 	}
 };
 
@@ -84,75 +109,71 @@ exports.editParty = async function (req, res) {
 			error: error.details[0].message
 		});
 	}
-	// Custom Validation
-	// Check if id is integer
-	const { id } = req.params;
-	if (!Number.isInteger(parseInt(id, 10))) {
-		return res.status(400).json({
-			status: 400,
-			error: `${id} must be an integer`
+	try {
+		const { id } = req.params;
+		// Check if party is already registered
+		const partyData = {
+			name: req.body.name.trim(),
+			hqaddress: req.body.hqaddress.trim(),
+			logourl: req.body.logourl.trim()
+		}
+		const party = await pool.query('SELECT * FROM parties WHERE id=$1', [id]);
+		if (party.rows.length === 0) {
+			return res.status(400).json({
+				status: 400,
+				error: `The party of id: <${id}> not found.`
+			});
+		}
+		// Update party obj
+		pool.query('UPDATE parties SET name=$1, hqaddress=$2, logourl=$3 where id=$4',
+		[
+			partyData.name,
+			partyData.hqaddress,
+			partyData.logourl,
+			id
+		]);
+		return res.status(201).json({
+			status: 201,
+			data: [
+			  {
+			  	id: id,
+			  	name: partyData.name,
+			  	hqaddress: partyData.hqaddress,
+			  	logourl: partyData.logourl,
+			  	registeredon: party.rows[0].registeredon
+			  }
+			]
 		});
-	}
-	// Check if party is already registered
-	const party = await partyModel.find(p => p.id === parseInt(id, 10));
-	if (!party) {
+	} catch (error) {
 		return res.status(404).json({
 			status: 404,
-			error: `The party of id: ${id} does not exist.`
+			error: error
 		});
 	}
-	// Update party
-	const newPartyName = {
-		name: req.body.name,
-		hqaddress: req.body.hqaddress,
-		logourl: req.body.logourl
-	};
-	party.name = newPartyName.name;
-	party.hqaddress = newPartyName.hqaddress;
-	party.logourl = newPartyName.logourl;
-	return res.status(200).json({
-		status: 200,
-		data: [
-		  {
-		  	id: party.id,
-		  	name: newPartyName.name,
-		  	hqaddress: newPartyName.hqaddress,
-		  	logourl: newPartyName.logourl
-		  }
-		]
-	});
 };
 
 // delete Party
 exports.deleteParty = async function (req, res) {
-	// Check if id is integer
-	const { id } = req.params;
-	if (!Number.isInteger(parseInt(id, 10))) {
-		return res.status(400).json({
-			status: 400,
-			error: `${id} must be an integer`
-		});
-	}
-	// Check if party exists
-	const party = await partyModel.find(p => p.id === parseInt(id, 10));
-	if (!party) {
-		return res.status(404).json({
-			status: 404,
-			error: `The party of id: ${id} does not exist.`
-		});
-	}
-	// Delete party
-	partyModel.map((parties, index) => {
-		if (parties.id == id) {
-			partyModel.splice(index, 1);
-			return res.status(200).json({
-				status: 200,
-				data: [
-					{
-						message: 'Party deleted successfully!'
-					}
-				]
+	try {
+		const { id } = req.params;
+		// Check if party is already registered
+		const party = await pool.query('SELECT * FROM parties WHERE id=$1', [id]);
+		if (party.rows.length === 0) {
+			return res.status(400).json({
+				status: 400,
+				error: `The party of id: <${id}> does not exist.`
 			});
 		}
-	});
+		// Delete party obj
+		pool.query('DELETE FROM parties where id=$1',[id]);
+		return res.status(201).json({
+			status: 201,
+			message: `Party of id: <${id}> deleted successfully!.`
+		});
+	} catch (error) {
+		return res.status(404).json({
+			status: 404,
+			error: error
+		});
+	}
 };
