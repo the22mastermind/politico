@@ -28,7 +28,7 @@ exports.createOffice = async function (req, res) {
 	}
 	// Register office
 	try {
-		pool.query('INSERT INTO offices(type,name) VALUES($1,$2)',
+		const qq = await pool.query('INSERT INTO offices(type,name) VALUES($1,$2) returning *',
 		[
 			officeData.type,
 			officeData.name

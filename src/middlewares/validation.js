@@ -30,9 +30,7 @@ function validateCreateParty(party) {
 
 function validateEditParty(party) {
   const schema = {
-    name: Joi.string().trim().regex(/^[a-zA-Z0-9 ]+$|^[a-zA-Z0-9 ]+$^[a-zA-Z0-9]+$/).min(3).max(30).required(),
-    hqaddress: Joi.string().min(3).max(100).required(),
-    logourl: Joi.string().max(200).required()
+    name: Joi.string().trim().regex(/^[a-zA-Z0-9 ]+$|^[a-zA-Z0-9 ]+$^[a-zA-Z0-9]+$/).min(3).max(30).required()
   };
   return Joi.validate(party, schema);
 };
